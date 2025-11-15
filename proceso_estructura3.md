@@ -1,37 +1,45 @@
-'''mermaid
+```mermaid
 erDiagram
 
-    CAT_PLANTILLAS ||--o{ REL_PLANTILLA_CAMPOS : contiene
-    CAT_CAMPOS ||--o{ REL_PLANTILLA_CAMPOS : pertenece
-    CAT_PLANTILLAS ||--o{ KARDEX : usa
+    %% ============================
+    %% TABLAS PRINCIPALES
+    %% ============================
 
-    CAT_PLANTILLAS {
+    cat_campos {
         int id PK
-        varchar nombre
+        text campo
+        text tipo
         text descripcion
     }
 
-    CAT_CAMPOS {
+    cat_plantillas {
         int id PK
-        varchar nombre_campo
-        varchar tipo_campo
+        text plantilla
         text descripcion
+        jsonb estructura   "Listado de IDs de cat_campos"
     }
 
-    REL_PLANTILLA_CAMPOS {
-        int id PK
-        int id_plantilla FK
-        int id_campo FK
-        int orden
-        bool obligatorio
-    }
-
-    KARDEX {
+    kardex {
         int id PK
         date fecha
-        varchar titulo
-        text descripcion
-        int id_plantilla FK
-        jsonb campos_valores
-        timestamp creado_en
+        text titulo
+        text ubicacion     "lat,lon"
+        int id_cat_plantilla FK
+        int padre          "Referencia a otro registro del kardex"
+        jsonb datos        "IDs de cat_campos y documentos asociados"
     }
+
+    %% ============================
+    %% RELACIONES
+    %% ============================
+
+    %% cat_plantillas.estructura --> lista de cat_campos.id
+    cat_plantillas ||--o{ cat_campos : "incluye (vía jsonB)"
+
+    %% Kardex pertenece a una plantilla
+    cat_plantillas ||--o{ kardex : "define estructura"
+
+    %% Kardex tiene jerarquía (padre → hijo)
+    kardex ||--o{ kardex : "padre-hijo"
+
+
