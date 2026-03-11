@@ -1,60 +1,23 @@
+
 ```mermaid
-erDiagram
+flowchart TD
 
-    %% ============================
-    %% TABLAS PRINCIPALES
-    %% ============================
+A[Usuario<br>Dispositivo móvil o PC] --> B[Frontend<br>HTML + JavaScript]
 
-    cat_campos {
-        int id PK
-        text campo
-        text tipo
-        text descripcion
-    }
+B --> C[Captura de datos<br>
+- 7 respuestas<br>
+- Fecha y hora<br>
+- Ubicación]
 
-    cat_plantillas {
-        int id PK
-        text plantilla
-        text descripcion
-        text empresas
-        text usuarios
-    }
+C --> D[Solicitud HTTP POST<br>JSON]
 
-    rel_campos_plantilla {
-        int id PK
-        int id_cat_campos FK
-        int id_cat_plantillas FK
-        int orden
-        boolean obligatorio
-    }
+D --> E[Backend<br>PHP API]
 
-    kardex {
-        int id PK
-        date fecha
-        text titulo
-        text ubicacion
-        int id_cat_plantilla FK
-        int padre
-    }
+E --> F[Procesamiento<br>
+Validación de datos]
 
-    data {
-        int id PK
-        int kardex FK
-        int id_rel_campo_plantilla FK
-        text valor
-    }
+F --> G[(Base de datos SQL<br>
+Respuestas de encuesta)]
 
-    %% ============================
-    %% RELACIONES
-    %% ============================
-
-    cat_plantillas ||--o{ rel_campos_plantilla : "define campos"
-    cat_campos ||--o{ rel_campos_plantilla : "forma parte de"
-
-    cat_plantillas ||--o{ kardex : "plantilla usada"
-
-    kardex ||--o{ data : "contiene valores"
-
-    rel_campos_plantilla ||--o{ data : "campo llenado"
-    
-    kardex ||--o{ kardex : "padre (jerarquía)"
+G --> H[Almacenamiento<br>
+Registros históricos]
