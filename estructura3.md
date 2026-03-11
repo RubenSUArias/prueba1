@@ -5,7 +5,7 @@ flowchart TD
 A[Usuario<br>Dispositivo móvil o PC] --> B[Frontend<br>HTML + JavaScript]
 
 B --> C[Captura de datos<br>
-- 7 respuestas<br>
+- 8 respuestas<br>
 - Fecha y hora<br>
 - Ubicación]
 
