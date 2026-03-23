@@ -1,4 +1,5 @@
-'''mermaid
+
+```mermaid
 erDiagram
 
 USUARIOS {
