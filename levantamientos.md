@@ -1,3 +1,4 @@
+'''mermaid
 erDiagram
 
 USUARIOS {
@@ -52,10 +53,12 @@ KARDEX {
     TEXT descripcion
     DATE fecha
     INT padre FK
+    LTREE path
     DOUBLE latitud
     DOUBLE longitud
     JSONB metadata
-    BOOLEAN deleted
+    INT created_by FK
+    INT updated_by FK
 }
 
 ARCHIVOS {
@@ -64,6 +67,7 @@ ARCHIVOS {
     TEXT nombre_archivo
     TEXT ruta_storage
     JSONB metadata
+    INT created_by FK
 }
 
 DATA {
@@ -72,6 +76,7 @@ DATA {
     TEXT clave
     TEXT valor_texto
     JSONB valor_json
+    INT created_by FK
 }
 
 AUDIT_LOG {
@@ -81,6 +86,7 @@ AUDIT_LOG {
     TEXT accion
     JSONB valores_antes
     JSONB valores_despues
+    INT user_id FK
 }
 
 USUARIOS ||--o{ USUARIOS_ROLES : tiene
@@ -92,9 +98,14 @@ PERMISOS ||--o{ ROLES_PERMISOS : define
 USUARIOS ||--o{ USER_SESSIONS : genera
 USUARIOS ||--o{ BITACORA_LOGIN : registra
 
-KARDEX ||--o{ ARCHIVOS : contiene
-KARDEX ||--o{ DATA : almacena
+USUARIOS ||--o{ KARDEX : crea
+USUARIOS ||--o{ KARDEX : actualiza
 
-KARDEX ||--o{ KARDEX : jerarquia
+USUARIOS ||--o{ ARCHIVOS : sube
+USUARIOS ||--o{ DATA : registra
 
 USUARIOS ||--o{ AUDIT_LOG : ejecuta
+
+KARDEX ||--o{ KARDEX : jerarquia
+KARDEX ||--o{ ARCHIVOS : contiene
+KARDEX ||--o{ DATA : almacena
